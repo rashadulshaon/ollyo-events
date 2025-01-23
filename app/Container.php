@@ -67,24 +67,28 @@ class Container
             $class = $this->serviceAliases[$class];
         }
 
-        $reflection = new \ReflectionClass($class);
-        $constructor = $reflection->getConstructor();
+        try {
+            $reflection = new \ReflectionClass($class);
+            $constructor = $reflection->getConstructor();
 
-        if (is_null($constructor)) {
-            return new $class;
-        }
-
-        $parameters = $constructor->getParameters();
-        $dependencies = [];
-
-        foreach ($parameters as $parameter) {
-            $dependencyClass = $parameter->getType()->getName();
-            if (isset($this->serviceAliases[$dependencyClass])) {
-                $dependencyClass = $this->serviceAliases[$dependencyClass];
+            if (is_null($constructor)) {
+                return new $class;
             }
-            $dependencies[] = $this->get($dependencyClass);
-        }
 
-        return $reflection->newInstanceArgs($dependencies);
+            $parameters = $constructor->getParameters();
+            $dependencies = [];
+
+            foreach ($parameters as $parameter) {
+                $dependencyClass = $parameter->getType()->getName();
+                if (isset($this->serviceAliases[$dependencyClass])) {
+                    $dependencyClass = $this->serviceAliases[$dependencyClass];
+                }
+                $dependencies[] = $this->get($dependencyClass);
+            }
+
+            return $reflection->newInstanceArgs($dependencies);
+        } catch (\ReflectionException $e) {
+            throw new \Exception("Failed to autowire class: $class.");
+        }
     }
 }
