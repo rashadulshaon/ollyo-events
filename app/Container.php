@@ -8,8 +8,11 @@ namespace App;
  * This class is responsible for managing service registrations and
  * dependency injection in the application.
  *
+ * @package App
  * @author Rashadul Shaon <codershaon@gmail.com>
  * @date 2025-01-23
+ * @version 1.0
+ * @link https://shaon.pages.dev
  */
 class Container
 {
