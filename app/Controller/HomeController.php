@@ -2,10 +2,16 @@
 
 namespace App\Controller;
 
+use App\Service\GreetService;
+
 class HomeController
 {
+    public function __construct(
+        private GreetService $greetService,
+    ) {}
+
     public function index()
     {
-        echo 'Hello, Ollyo!';
+        $this->greetService->sayHello();
     }
 }

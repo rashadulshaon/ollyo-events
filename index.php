@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use App\Container;
 use App\Controller\HomeController;
 
-(new HomeController())->index();
+(new Container())->get(HomeController::class)->index();
