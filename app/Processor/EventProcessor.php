@@ -27,7 +27,7 @@ class EventProcessor
         $this->db->updateSchema();
         $data = $this->eventBlueprint->readMultiple(itemsPerPage: 8, pageNumber: 1);
 
-        require_once $this->baseTemplateDir . 'homepage.php';
+        return require_once $this->baseTemplateDir . 'homepage.php';
     }
 
     #[Route(path: '/events/{eventId}', method: 'GET')]
