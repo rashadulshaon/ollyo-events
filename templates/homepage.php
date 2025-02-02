@@ -9,36 +9,10 @@
 </head>
 
 <body>
-    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Ollyo Events</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor04" aria-controls="navbarColor04" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarColor04">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Home
-                            <span class="visually-hidden">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Create Event</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-sm-2" type="search" placeholder="Search">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </header>
+    <?php include 'templates/header.php'; ?>
 
     <section class="bg-body-tertiary text-center py-5">
-        <h1>Howdy, Welcome to Ollyo Events!</h1>
+        <h1>Howdy, Welcome to <span class="text-success">Ollyo Events!</span></h1>
         <p class="col-lg-6 mx-auto">Explore our list of events, which are carefully curated to ensure that you find exactly what you're looking for. Whether you're interested in concerts, festivals, conferences, or workshops, we've got you covered.</p>
     </section>
 
@@ -60,9 +34,7 @@
         </div>
     </main>
 
-    <footer class="text-center">
-        <p>Developed by <a target="_blank" href="https://shaon.pages.dev">Rashadul Shaon</a></p>
-    </footer>
+    <?php include 'templates/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
