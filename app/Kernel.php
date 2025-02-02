@@ -7,14 +7,10 @@ class Kernel
     private const DEBUG = true;
     private Container $container;
 
-    private $excludeAutowires = [
-        'App\\Blueprint',
-    ];
-
     public function __construct()
     {
         try {
-            $this->container = new Container($this->excludeAutowires);
+            $this->container = new Container();
             $this->handleRequest();
         } catch (\Exception $e) {
             if (self::DEBUG) {
