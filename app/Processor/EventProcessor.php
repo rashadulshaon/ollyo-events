@@ -11,29 +11,23 @@ class EventProcessor
 {
     private $container;
     private $db;
-    private $event;
+    private $eventBlueprint;
+    private $baseTemplateDir = __DIR__ . '/../../templates/';
 
     public function __construct()
     {
         $this->container = new Container();
         $this->db = $this->container->get(SchemaHandler::class);
-        $this->event = $this->container->get(Event::class);
+        $this->eventBlueprint = $this->container->get(Event::class);
     }
 
     #[Route(path: '/', method: 'GET')]
     public function index()
     {
         $this->db->updateSchema();
-        $eventInstance = $this->event->create([
-            'title' => 'Test Event',
-            'description' => 'This is a test event.'
-        ]);
+        $data = $this->eventBlueprint->readMultiple(itemsPerPage: 8, pageNumber: 1);
 
-        $anotherEvent = $this->event->delete(2);
-
-        dump_and_die($anotherEvent);
-
-        return "Welcome to Ollyo Events!";
+        require_once $this->baseTemplateDir . 'homepage.php';
     }
 
     #[Route(path: '/events/{eventId}', method: 'GET')]
