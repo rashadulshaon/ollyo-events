@@ -20,7 +20,7 @@
         <h3 class="text-center mb-5">Our Latest Events</h3>
         <div class="row">
             <?php foreach ($data as $event): ?>
-                <div class="col-md-6 col-lg-3 mb-4">
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
                     <div class="card shadow-sm border-success p-1">
                         <img src="<?= $event['image_url']; ?>" class="card-img-top rounded-3 p-3" alt="...">
                         <div class="card-body">
