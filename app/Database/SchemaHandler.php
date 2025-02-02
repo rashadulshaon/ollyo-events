@@ -1,13 +1,13 @@
 <?php
 
-namespace App\ORM;
+namespace App\Database;
 
 use ReflectionClass;
 use ReflectionProperty;
 use App\Service\ClassFinder;
 use PDO;
 
-class DBHandler
+class SchemaHandler
 {
     private $connection = [
         'host' => 'localhost',

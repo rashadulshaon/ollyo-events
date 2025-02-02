@@ -5,7 +5,7 @@ namespace App\Processor;
 use App\Attributes\Route;
 use App\Blueprint\Event;
 use App\Container;
-use App\ORM\DBHandler;
+use App\Database\SchemaHandler;
 
 class EventProcessor
 {
@@ -16,7 +16,7 @@ class EventProcessor
     public function __construct()
     {
         $this->container = new Container();
-        $this->db = $this->container->get(DBHandler::class);
+        $this->db = $this->container->get(SchemaHandler::class);
         $this->event = $this->container->get(Event::class);
     }
 
@@ -29,7 +29,9 @@ class EventProcessor
             'description' => 'This is a test event.'
         ]);
 
-        dump_and_die($eventInstance);
+        $anotherEvent = $this->event->delete(2);
+
+        dump_and_die($anotherEvent);
 
         return "Welcome to Ollyo Events!";
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ORM;
+namespace App\Database;
 
 use App\Container;
 use PDO;
@@ -13,7 +13,7 @@ abstract class AbstractBlueprint
     public function __construct()
     {
         $this->container = new Container();
-        $this->db = $this->container->get(DBHandler::class);
+        $this->db = $this->container->get(SchemaHandler::class);
     }
 
     abstract static protected function tableName(): string;

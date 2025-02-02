@@ -2,7 +2,7 @@
 
 namespace App\Blueprint;
 
-use App\ORM\AbstractBlueprint;
+use App\Database\AbstractBlueprint;
 
 class Event extends AbstractBlueprint
 {
