@@ -37,11 +37,10 @@ class DBHandler
             $properties = $reflection->getProperties(ReflectionProperty::IS_PRIVATE);
             $tableName = $class::tableName();
 
-            // Check if the table exists
             if (!$this->tableExists($tableName)) {
                 $this->createTable($tableName, $properties);
             } else {
-                $this->alterTable($tableName, $properties);
+                $this->syncTable($tableName, $properties);
             }
         }
     }
@@ -69,10 +68,11 @@ class DBHandler
         $stmt->execute();
     }
 
-    private function alterTable(string $tableName, array $properties): void
+    private function syncTable(string $tableName, array $properties): void
     {
         $existingColumns = $this->getExistingColumns($tableName);
         $newColumns = [];
+        $propertiesNames = array_map(fn($property) => $property->getName(), $properties);
 
         foreach ($properties as $property) {
             $columnName = $property->getName();
@@ -80,6 +80,12 @@ class DBHandler
                 $type = (string) $property->getType();
                 $columnType = $this->mapTypeToSQL($type);
                 $newColumns[] = "ADD COLUMN $columnName $columnType";
+            }
+        }
+
+        foreach ($existingColumns as $existingColumn) {
+            if (!in_array($existingColumn, $propertiesNames)) {
+                $newColumns[] = "DROP COLUMN $existingColumn";
             }
         }
 
@@ -101,16 +107,18 @@ class DBHandler
     private function mapTypeToSQL(string $type): string
     {
         switch ($type) {
-            case 'int':
-                return 'INT';
             case 'string':
                 return 'VARCHAR(255)';
+            case 'int':
+                return 'INT';
             case 'float':
                 return 'FLOAT';
             case 'bool':
                 return 'TINYINT(1)';
+            case 'DateTime':
+                return 'DATETIME';
             default:
-                return 'VARCHAR(255)'; // Default type
+                throw new \InvalidArgumentException("Unsupported type: $type");
         }
     }
 }
