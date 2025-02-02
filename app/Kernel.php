@@ -4,11 +4,11 @@ namespace App;
 
 class Kernel
 {
-    private const DEBUG = false;
+    private const DEBUG = true;
     private Container $container;
 
     private $excludeAutowires = [
-        'App\\Model',
+        'App\\Blueprint',
     ];
 
     public function __construct()
@@ -28,7 +28,7 @@ class Kernel
     private function handleRequest()
     {
         $router = $this->container->get(Router::class);
-        $router->registerRoutesFromNamespace('App\Controller');
+        $router->registerRoutesFromNamespace('App\Processor');
 
         $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $requestMethod = $_SERVER['REQUEST_METHOD'];

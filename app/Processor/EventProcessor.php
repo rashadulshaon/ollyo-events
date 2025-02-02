@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Processor;
 
 use App\Attributes\Route;
 
-class EventController
+class EventProcessor
 {
     #[Route(path: '/', method: 'GET')]
     public function index()

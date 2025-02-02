@@ -8,7 +8,7 @@ use App\Service\ClassFinder;
 /**
  * Class Router
  *
- * Manages routing of HTTP requests to controller methods based on defined routes.
+ * Manages routing of HTTP requests to processor methods based on defined routes.
  * Supports attribute-based routing and URL parameter matching.
  *
  * @package App
@@ -20,27 +20,27 @@ use App\Service\ClassFinder;
 class Router
 {
     private array $routes = [];
-    private array $controllers = [];
+    private array $processors = [];
 
     public function __construct(private ClassFinder $classFinder) {}
 
     public function registerRoutesFromNamespace(string $namespace)
     {
-        $controllerClasses = $this->classFinder->getClassesUnderNamespace($namespace);
+        $processorClasses = $this->classFinder->getClassesUnderNamespace($namespace);
 
-        foreach ($controllerClasses as $class) {
+        foreach ($processorClasses as $class) {
             if (strpos($class, $namespace) === 0) {
                 $this->registerRoutes(new $class());
             }
         }
     }
 
-    private function registerRoutes(object $controller)
+    private function registerRoutes(object $processor)
     {
-        $controllerClass = new \ReflectionClass($controller);
-        $this->controllers[$controllerClass->getName()] = $controller;
+        $processorClass = new \ReflectionClass($processor);
+        $this->processors[$processorClass->getName()] = $processor;
 
-        foreach ($controllerClass->getMethods() as $method) {
+        foreach ($processorClass->getMethods() as $method) {
             $attributes = $method->getAttributes(Route::class);
             foreach ($attributes as $attribute) {
                 $route = $attribute->newInstance();
@@ -70,9 +70,9 @@ class Router
         $result = $this->match($url, $requestMethod);
         if ($result) {
             [$method, $params] = $result;
-            $controllerClass = $method->getDeclaringClass()->getName();
-            $controller = $this->controllers[$controllerClass];
-            return $method->invokeArgs($controller, $this->resolveParams($method, $params));
+            $processorClass = $method->getDeclaringClass()->getName();
+            $processor = $this->processors[$processorClass];
+            return $method->invokeArgs($processor, $this->resolveParams($method, $params));
         }
 
         http_response_code(404);
