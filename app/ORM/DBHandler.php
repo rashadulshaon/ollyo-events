@@ -55,7 +55,7 @@ class DBHandler
 
     private function createTable(string $tableName, array $properties): void
     {
-        $columns = [];
+        $columns = ['id INT AUTO_INCREMENT PRIMARY KEY']; // Add auto-increment primary key
         foreach ($properties as $property) {
             $type = (string) $property->getType();
             $columnType = $this->mapTypeToSQL($type);
