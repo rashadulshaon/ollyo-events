@@ -2,8 +2,6 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-(new App\Kernel());
-
 if (!function_exists('dump_and_die')) {
     function dump_and_die(...$vars)
     {
@@ -18,3 +16,5 @@ if (!function_exists('dump_and_die')) {
         exit;
     }
 }
+
+(new App\Kernel());
