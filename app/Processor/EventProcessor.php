@@ -54,6 +54,8 @@ class EventProcessor
             'address' => $_POST['address'],
         ]);
 
-        require_once $this->baseTemplateDir . 'event_registration_success.php';
+        $actionSuccess = $registration ? true : false;
+        $actionMessage = $registration ? 'Your registration was successful!' : 'Registration failed';
+        require_once $this->baseTemplateDir . 'action_result.php';
     }
 }
