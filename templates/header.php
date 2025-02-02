@@ -24,10 +24,10 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="create">Create Event</a>
+                        <a class="nav-link" href="/create">Create Event</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login">Login</a>
+                        <a class="nav-link" href="/login">Login</a>
                     </li>
                 </ul>
                 <form class="d-flex">
