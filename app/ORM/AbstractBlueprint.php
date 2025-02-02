@@ -16,9 +16,11 @@ abstract class AbstractBlueprint
         $this->db = $this->container->get(DBHandler::class);
     }
 
+    abstract static protected function tableName(): string;
+
     public function create(array $data): array
     {
-        $tableName = (new static())->tableName();
+        $tableName = $this->tableName();
         $columns = implode(', ', array_keys($data));
         $placeholders = implode(', ', array_fill(0, count($data), '?'));
 
@@ -31,7 +33,7 @@ abstract class AbstractBlueprint
 
     public function read(int $id): array
     {
-        $tableName = (new static())->tableName();
+        $tableName = $this->tableName();
         $sql = "SELECT * FROM $tableName WHERE id = ?";
         $stmt = $this->db->getConnection()->prepare($sql);
         $stmt->execute([$id]);
@@ -41,7 +43,7 @@ abstract class AbstractBlueprint
 
     public function readMultiple(array $filters): array
     {
-        $tableName = (new static())->tableName();
+        $tableName = $this->tableName();
         $whereClauses = [];
         $params = [];
 
@@ -60,7 +62,7 @@ abstract class AbstractBlueprint
 
     public function update(int $id, array $data): array
     {
-        $tableName = (new static())->tableName();
+        $tableName = $this->tableName();
         $setClauses = [];
         $params = [];
 
@@ -71,7 +73,7 @@ abstract class AbstractBlueprint
 
         $params[] = $id;
         $setSql = implode(', ', $setClauses);
-        $sql = "UPDATE $ tableName SET $setSql WHERE id = ?";
+        $sql = "UPDATE $tableName SET $setSql WHERE id = ?";
         $stmt = $this->db->getConnection()->prepare($sql);
         $stmt->execute($params);
 
@@ -80,7 +82,7 @@ abstract class AbstractBlueprint
 
     public function delete(int $id): bool
     {
-        $tableName = (new static())->tableName();
+        $tableName = $this->tableName();
         $sql = "DELETE FROM $tableName WHERE id = ?";
         $stmt = $this->db->getConnection()->prepare($sql);
         return $stmt->execute([$id]);
