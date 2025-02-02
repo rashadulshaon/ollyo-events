@@ -31,6 +31,7 @@ class DBHandler
     {
         $namespace = 'App\\Blueprint';
         $classes = $this->classFinder->getClassesUnderNamespace($namespace);
+        $existingTables = $this->getExistingTables();
 
         foreach ($classes as $class) {
             $reflection = new ReflectionClass($class);
@@ -43,6 +44,20 @@ class DBHandler
                 $this->syncTable($tableName, $properties);
             }
         }
+
+        foreach ($existingTables as $tableName) {
+            if (!in_array($tableName, array_map(fn($class) => $class::tableName(), $classes))) {
+                $this->dropTable($tableName);
+            }
+        }
+    }
+
+    private function getExistingTables(): array
+    {
+        $sql = "SHOW TABLES";
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->execute();
+        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'Tables_in_' . $this->connection['dbname']);
     }
 
     private function tableExists(string $tableName): bool
@@ -94,6 +109,13 @@ class DBHandler
             $stmt = $this->getConnection()->prepare($alterSql);
             $stmt->execute();
         }
+    }
+
+    private function dropTable(string $tableName): void
+    {
+        $sql = "DROP TABLE IF EXISTS $tableName";
+        $stmt = $this->getConnection()->prepare($sql);
+        $stmt->execute();
     }
 
     private function getExistingColumns(string $tableName): array
