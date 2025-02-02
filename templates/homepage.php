@@ -21,12 +21,12 @@
         <div class="row">
             <?php foreach ($data as $event): ?>
                 <div class="col-md-6 col-lg-3 mb-4">
-                    <img src="<?= $event['image_url']; ?>" class="card-img-top" alt="...">
-                    <div class="card">
+                    <div class="card shadow-sm border-success p-1">
+                        <img src="<?= $event['image_url']; ?>" class="card-img-top rounded-3 p-3" alt="...">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($event['title']); ?></h5>
                             <p class="card-text"><?= htmlspecialchars($event['summary']); ?></p>
-                            <a href="book/<?= htmlspecialchars($event['id']); ?>" class="btn btn-sm btn-primary">Book Now</a>
+                            <a href="book/<?= htmlspecialchars($event['id']); ?>" class="btn btn-sm btn-primary rounded-pill px-4">Book Now</a>
                         </div>
                     </div>
                 </div>
