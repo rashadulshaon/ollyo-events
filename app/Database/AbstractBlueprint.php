@@ -41,19 +41,24 @@ abstract class AbstractBlueprint
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     }
 
-    public function readMultiple(array $filters): array
+    public function readMultiple(array $filters = [], int $itemsPerPage = 10, int $pageNumber = 1): array
     {
         $tableName = $this->tableName();
         $whereClauses = [];
         $params = [];
 
-        foreach ($filters as $key => $value) {
-            $whereClauses[] = "$key = ?";
-            $params[] = $value;
+        if ($filters) {
+            foreach ($filters as $key => $value) {
+                $whereClauses[] = "$key = ?";
+                $params[] = $value;
+            }
         }
 
         $whereSql = $whereClauses ? 'WHERE ' . implode(' AND ', $whereClauses) : '';
-        $sql = "SELECT * FROM $tableName $whereSql";
+
+        $offset = ($pageNumber - 1) * $itemsPerPage;
+
+        $sql = "SELECT * FROM $tableName $whereSql LIMIT $itemsPerPage OFFSET $offset";
         $stmt = $this->db->getConnection()->prepare($sql);
         $stmt->execute($params);
 
