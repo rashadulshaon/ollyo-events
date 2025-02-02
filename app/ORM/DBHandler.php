@@ -99,7 +99,7 @@ class DBHandler
         }
 
         foreach ($existingColumns as $existingColumn) {
-            if (!in_array($existingColumn, $propertiesNames)) {
+            if (!in_array($existingColumn, $propertiesNames) && $existingColumn !== 'id') {
                 $newColumns[] = "DROP COLUMN $existingColumn";
             }
         }
