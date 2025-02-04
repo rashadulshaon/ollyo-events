@@ -33,6 +33,28 @@ class EventProcessor
         require_once $this->baseTemplateDir . 'homepage.php';
     }
 
+    #[Route(path: '/create', method: 'GET')]
+    public function create()
+    {
+        require_once $this->baseTemplateDir . 'event_create.php';
+    }
+
+    #[Route(path: '/create', method: 'POST')]
+    public function processCreate()
+    {
+        $this->eventBlueprint->create([
+            'title' => $_POST['title'],
+            'summary' => $_POST['summary'],
+            'image_url' => $_POST['image_url'],
+            'phone' => $_POST['phone'],
+            'max_participants' => $_POST['max_participants'],
+        ]);
+
+        $actionSuccess = true;
+        $actionMessage = 'Event created successfully';
+        require_once $this->baseTemplateDir . 'action_result.php';
+    }
+
     #[Route(path: '/book/{eventId}', method: 'GET')]
     public function book(int $eventId)
     {
